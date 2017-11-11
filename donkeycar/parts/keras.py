@@ -79,7 +79,6 @@ class KerasCategorical(KerasPilot):
     def run(self, img_arr):
         img_arr = img_arr.reshape((1,) + img_arr.shape)
         angle_binned, throttle = self.model.predict(img_arr)
-        print('throt0tle', throttle)
         angle_certainty = max(angle_binned[0])
         angle_unbinned = dk.utils.linear_unbin(angle_binned)
         return angle_unbinned, throttle[0][0]
@@ -117,7 +116,6 @@ class KerasIMU(KerasPilot):
         img_arr = img_arr.reshape((1,) + img_arr.shape)
         imu_arr = np.array([accel_x, accel_y, accel_z, gyr_x, gyr_y, gyr_z, temp]).reshape(1,self.num_imu_inputs)
         outputs = self.model.predict([img_arr, imu_arr])
-        print(len(outputs), outputs, 'hej')
         steering = outputs[0]
         throttle = outputs[1]
         return steering[0][0], throttle[0][0]
@@ -270,7 +268,6 @@ def default_imu(num_outputs, num_imu_inputs):
 
     img_in = Input(shape=(120,160,3), name='img_in')
     imu_in = Input(shape=(num_imu_inputs,), name="imu_in")
-    print (imu_in, 'IMUSS')
 
     x = img_in
     x = Cropping2D(cropping=((60,0), (0,0)))(x) #trim 60 pixels off top
