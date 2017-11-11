@@ -79,8 +79,8 @@ class KerasCategorical(KerasPilot):
     def run(self, img_arr):
         img_arr = img_arr.reshape((1,) + img_arr.shape)
         angle_binned, throttle = self.model.predict(img_arr)
-        #print('throttle', throttle)
-        #angle_certainty = max(angle_binned[0])
+        print('throt0tle', throttle)
+        angle_certainty = max(angle_binned[0])
         angle_unbinned = dk.utils.linear_unbin(angle_binned)
         return angle_unbinned, throttle[0][0]
 
@@ -98,7 +98,7 @@ class KerasLinear(KerasPilot):
     def run(self, img_arr):
         img_arr = img_arr.reshape((1,) + img_arr.shape)
         outputs = self.model.predict(img_arr)
-        #print(len(outputs), outputs)
+        print(len(outputs), outputs)
         steering = outputs[0]
         throttle = outputs[1]
         return steering[0][0], throttle[0][0]
@@ -280,8 +280,8 @@ def default_imu(num_outputs, num_imu_inputs):
     x = Convolution2D(64, (3,3), strides=(1,1), activation='relu')(x)
     x = Flatten(name='flattened')(x)
     x = Dense(100, activation='relu')(x)
-
     x = Dropout(.1)(x)
+
     y = imu_in
     y = Dense(14, activation='relu')(y)
     y = Dense(14, activation='relu')(y)
