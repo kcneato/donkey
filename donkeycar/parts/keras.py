@@ -141,8 +141,8 @@ class KerasIMU(KerasPilot):
         outputs = self.model.predict([img_arr, imu_arr])
         steering = outputs[0]
         throttle = outputs[1]
-        print 'steering'
-        print 'throttle'
+        print (steering)
+        print (throttle)
         return steering[0][0], throttle[0][0]
 
 
