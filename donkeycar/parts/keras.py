@@ -106,6 +106,22 @@ class KerasLinear(KerasPilot):
 
 
 class KerasIMU(KerasPilot):
+
+    def __init__(self, model=None, num_outputs=2, num_imu_inputs=7 , *args, **kwargs):
+        super(KerasIMU, self).__init__(*args, **kwargs)
+        self.num_imu_inputs = num_imu_inputs
+        self.model = default_imu(num_outputs = num_outputs, num_imu_inputs = num_imu_inputs)
+
+    def run(self, img_arr, accel_x, accel_y, accel_z, gyr_x, gyr_y, gyr_z, temp):
+        #TODO: would be nice to take a vector input array.
+        img_arr = img_arr.reshape((1,) + img_arr.shape)
+        imu_arr = np.array([accel_x, accel_y, accel_z, gyr_x, gyr_y, gyr_z, temp]).reshape(1,self.num_imu_inputs)
+        outputs = self.model.predict([img_arr, imu_arr])
+        print(len(outputs), outputs, 'hej')
+        steering = outputs[0]
+        throttle = outputs[1]
+        return steering[0][0], throttle[0][0]
+
     '''
     A Keras part that take an image and IMU vector as input,
     outputs steering and throttle
@@ -129,22 +145,6 @@ class KerasIMU(KerasPilot):
                                                     train_frac=cfg.TRAIN_TEST_SPLIT)
 
     '''
-    def __init__(self, model=None, num_outputs=2, num_imu_inputs=7 , *args, **kwargs):
-        super(KerasIMU, self).__init__(*args, **kwargs)
-        self.num_imu_inputs = num_imu_inputs
-        self.model = default_imu(num_outputs = num_outputs, num_imu_inputs = num_imu_inputs)
-
-    def run(self, img_arr, accel_x, accel_y, accel_z, gyr_x, gyr_y, gyr_z, temp):
-        #TODO: would be nice to take a vector input array.
-        img_arr = img_arr.reshape((1,) + img_arr.shape)
-        imu_arr = np.array([accel_x, accel_y, accel_z, gyr_x, gyr_y, gyr_z, temp]).reshape(1,self.num_imu_inputs)
-        outputs = self.model.predict([img_arr, imu_arr])
-        print(len(outputs), outputs)
-        steering = outputs[0]
-        throttle = outputs[1]
-        return steering[0][0], throttle[0][0]
-
-
 
 def default_categorical():
     from keras.layers import Input, Dense, merge
