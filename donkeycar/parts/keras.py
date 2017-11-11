@@ -272,7 +272,11 @@ def default_imu(num_outputs, num_imu_inputs):
 
     x = img_in
     x = Cropping2D(cropping=((60,0), (0,0)))(x) #trim 60 pixels off top
+<<<<<<< HEAD
     x = Lambda(lambda x: x/127.5 - 1.)(x) # normalize and re-center
+=======
+    #x = Lambda(lambda x: x/127.5 - 1.)(x) # normalize and re-center
+>>>>>>> 1f5046cc1b185fa76575bb3f7f33cff68ed3f0c5
     x = Convolution2D(24, (5,5), strides=(2,2), activation='relu')(x)
     x = Convolution2D(32, (5,5), strides=(2,2), activation='relu')(x)
     x = Convolution2D(64, (3,3), strides=(2,2), activation='relu')(x)
