@@ -107,7 +107,7 @@ class KerasLinear(KerasPilot):
 
 class KerasIMU(KerasPilot):
 
-    def __init__(self, model=None, num_outputs=none, num_imu_inputs=7 , *args, **kwargs):
+    def __init__(self, model=None, num_outputs=None, num_imu_inputs=7 , *args, **kwargs):
         super(KerasIMU, self).__init__(*args, **kwargs)
         self.num_imu_inputs = num_imu_inputs
         self.model = default_imu(num_outputs = num_outputs, num_imu_inputs = num_imu_inputs)
