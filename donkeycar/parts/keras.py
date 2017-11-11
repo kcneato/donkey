@@ -139,6 +139,7 @@ class KerasIMU(KerasPilot):
         img_arr = img_arr.reshape((1,) + img_arr.shape)
         imu_arr = np.array([accel_x, accel_y, accel_z, gyr_x, gyr_y, gyr_z, temp]).reshape(1,self.num_imu_inputs)
         outputs = self.model.predict([img_arr, imu_arr])
+        print(len(outputs), outputs)
         steering = outputs[0]
         throttle = outputs[1]
         return steering[0][0], throttle[0][0]
