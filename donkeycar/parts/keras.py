@@ -268,6 +268,8 @@ def default_imu(num_outputs, num_imu_inputs):
     from keras.layers.merge import concatenate
 
     img_in = Input(shape=(120,160,3), name='img_in')
+    imu_in = Input(shape=(num_imu_inputs,), name="imu_in")
+
     x = img_in
     x = Cropping2D(cropping=((60,0), (0,0)))(x) #trim 60 pixels off top
     #x = Lambda(lambda x: x/127.5 - 1.)(x) # normalize and re-center
@@ -278,8 +280,8 @@ def default_imu(num_outputs, num_imu_inputs):
     x = Convolution2D(64, (3,3), strides=(1,1), activation='relu')(x)
     x = Flatten(name='flattened')(x)
     x = Dense(100, activation='relu')(x)
-    x = Dropout(.1)(x)
 
+    x = Dropout(.1)(x)
     y = imu_in
     y = Dense(14, activation='relu')(y)
     y = Dense(14, activation='relu')(y)
