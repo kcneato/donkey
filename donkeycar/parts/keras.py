@@ -107,7 +107,7 @@ class KerasLinear(KerasPilot):
 
 class KerasIMU(KerasPilot):
 
-    def __init__(self, model=None, num_outputs=None, num_imu_inputs=7 , *args, **kwargs):
+    def __init__(self, model=None, num_outputs=2, num_imu_inputs=7 , *args, **kwargs):
         super(KerasIMU, self).__init__(*args, **kwargs)
         self.num_imu_inputs = num_imu_inputs
         self.model = default_imu(num_outputs = num_outputs, num_imu_inputs = num_imu_inputs)
@@ -270,6 +270,7 @@ def default_imu(num_outputs, num_imu_inputs):
 
     img_in = Input(shape=(120,160,3), name='img_in')
     imu_in = Input(shape=(num_imu_inputs,), name="imu_in")
+    print (imu_in, 'IMUSS')
 
     x = img_in
     x = Cropping2D(cropping=((60,0), (0,0)))(x) #trim 60 pixels off top
